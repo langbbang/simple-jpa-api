@@ -1,0 +1,1 @@
+insert into member(create_at, update_at, nickname, email)  values(now(), now(), '별칭', 'example@example.com');
