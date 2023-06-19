@@ -12,6 +12,7 @@ import java.time.ZonedDateTime;
 public class MemberDto {
     private Long id;
     private String email;
+    private String nickname;
     private ZonedDateTime createAt;
     private ZonedDateTime updateAt;
 
@@ -19,7 +20,8 @@ public class MemberDto {
     public MemberDto(Member member) {
         this.id = member.getId();
         this.email = member.getEmail().getValue();
-        this.createAt = member.getCreateAt();
-        this.updateAt = member.getUpdateAt();
+        this.nickname = member.getNickname();
+        this.createAt = member.getDateTime().getCreateAt();
+        this.updateAt = member.getDateTime().getUpdateAt();
     }
 }
