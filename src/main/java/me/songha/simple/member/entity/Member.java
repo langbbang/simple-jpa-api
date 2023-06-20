@@ -4,8 +4,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import me.songha.simple.common.entity.DateTime;
+import me.songha.simple.member.dto.MemberResponse;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.ZonedDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
@@ -31,8 +35,13 @@ public class Member {
     @Column(length = 32) // varchar(32)
     private String nickname;
 
-    @Embedded
-    private DateTime dateTime;
+    @CreatedDate
+    @Column(updatable = false)
+    @NotNull
+    private ZonedDateTime createAt;
+
+    @LastModifiedDate
+    private ZonedDateTime updateAt;
 
     @Builder
     public Member(Email email, String nickname) {
@@ -42,5 +51,11 @@ public class Member {
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public MemberResponse toMemberResponse() {
+        return MemberResponse.builder()
+                .member(this)
+                .build();
     }
 }

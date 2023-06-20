@@ -1,15 +1,13 @@
-package me.songha.simple.member;
+package me.songha.simple.member.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 import me.songha.simple.member.entity.Member;
 
 import java.time.ZonedDateTime;
 
-@EqualsAndHashCode
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
-@Getter
-public class MemberDto {
+@Data
+public class MemberResponse {
     private Long id;
     private String email;
     private String nickname;
@@ -17,11 +15,11 @@ public class MemberDto {
     private ZonedDateTime updateAt;
 
     @Builder
-    public MemberDto(Member member) {
+    public MemberResponse(Member member) {
         this.id = member.getId();
         this.email = member.getEmail().getValue();
         this.nickname = member.getNickname();
-        this.createAt = member.getDateTime().getCreateAt();
-        this.updateAt = member.getDateTime().getUpdateAt();
+        this.createAt = member.getCreateAt();
+        this.updateAt = member.getUpdateAt();
     }
 }

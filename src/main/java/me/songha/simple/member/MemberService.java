@@ -1,36 +1,33 @@
 package me.songha.simple.member;
 
 import lombok.RequiredArgsConstructor;
+import me.songha.simple.member.dto.MemberRequest;
+import me.songha.simple.member.dto.MemberResponse;
 import me.songha.simple.member.entity.Member;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public MemberDto getMemberDto(Long id) {
+    public MemberResponse findMemberById(Long id) {
         Member member = memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
-        return MemberDto.builder()
+        return MemberResponse.builder()
                 .member(member)
                 .build();
     }
 
-    @Transactional
-    public Member save(Member member) {
-        return memberRepository.save(member);
+    public MemberResponse create(MemberRequest memberRequest) {
+        return memberRepository.save(memberRequest.toEntity()).toMemberResponse();
     }
 
-    @Transactional(readOnly = true) // todo :: for test code, used flush cache
-    public Member updateNickname(Long id, String nickname) {
+    public MemberResponse updateNickname(Long id, String nickname) {
         Member member = memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
-        member.updateNickname(nickname);
-        return member;
+        member.updateNickname(nickname); // dirty check
+        return member.toMemberResponse();
     }
 
-    @Transactional(readOnly = true)
-    public Member getMember(Long id) {
-        return memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
-    }
 }
