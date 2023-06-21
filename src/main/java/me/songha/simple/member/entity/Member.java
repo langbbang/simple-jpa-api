@@ -49,8 +49,9 @@ public class Member {
         this.nickname = nickname;
     }
 
-    public void updateNickname(String nickname) {
+    public Member updateNickname(String nickname) {
         this.nickname = nickname;
+        return this;
     }
 
     public MemberResponse toMemberResponse() {

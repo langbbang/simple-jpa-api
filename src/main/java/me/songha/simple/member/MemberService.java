@@ -3,7 +3,6 @@ package me.songha.simple.member;
 import lombok.RequiredArgsConstructor;
 import me.songha.simple.member.dto.MemberRequest;
 import me.songha.simple.member.dto.MemberResponse;
-import me.songha.simple.member.entity.Member;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +13,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public MemberResponse findMemberById(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
-        return MemberResponse.builder()
-                .member(member)
-                .build();
+        return memberRepository.findById(id).orElseThrow(MemberNotFoundException::new).toMemberResponse();
     }
 
     public MemberResponse create(MemberRequest memberRequest) {
@@ -25,9 +21,10 @@ public class MemberService {
     }
 
     public MemberResponse updateNickname(Long id, String nickname) {
-        Member member = memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
-        member.updateNickname(nickname); // dirty check
-        return member.toMemberResponse();
+        return memberRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new)
+                .updateNickname(nickname) // dirty check
+                .toMemberResponse();
     }
 
 }

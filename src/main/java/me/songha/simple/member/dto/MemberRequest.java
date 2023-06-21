@@ -1,9 +1,11 @@
 package me.songha.simple.member.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import me.songha.simple.member.entity.Email;
 import me.songha.simple.member.entity.Member;
 
+@Builder
 @Data
 public class MemberRequest {
     private String email;
