@@ -7,7 +7,7 @@ import me.songha.simple.member.entity.Member;
 
 @Builder
 @Data
-public class MemberRequest {
+public class MemberCreationRequest {
     private String email;
     private String nickname;
 

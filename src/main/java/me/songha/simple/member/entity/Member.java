@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import me.songha.simple.member.dto.MemberResponse;
+import me.songha.simple.member.dto.MemberUpdateRequest;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -49,8 +50,9 @@ public class Member {
         this.nickname = nickname;
     }
 
-    public Member updateNickname(String nickname) {
-        this.nickname = nickname;
+    public Member updateMember(MemberUpdateRequest updateRequest) {
+        if (updateRequest.getNickname() != null)
+            this.nickname = updateRequest.getNickname();
         return this;
     }
 

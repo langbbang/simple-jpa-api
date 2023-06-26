@@ -1,9 +1,9 @@
 package me.songha.simple.member;
 
+import me.songha.simple.member.dto.MemberUpdateRequest;
 import me.songha.simple.member.entity.Email;
 import me.songha.simple.member.entity.Member;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +16,7 @@ class MemberServiceTest {
     @Autowired
     private MemberTestService memberService;
 
-    @BeforeEach
+    //    @BeforeEach
     void setUp() {
         System.out.println("set up!!");
 
@@ -74,10 +74,14 @@ class MemberServiceTest {
     @Test
     @Rollback(false)
     void 트랜잭션_readOnly_true_일때_Entity객체를_Update_한다면() {
+        MemberUpdateRequest updateRequest = MemberUpdateRequest.builder()
+                .id(1L)
+                .nickname("업데이트")
+                .build();
         /**
          * transactional을 readOnly=true 로 설정하게 되면 영속성 컨텍스트가 flush 되지 않으므로 db와 연동되지 않는다.
          */
-        Member member1 = memberService.updateNickname(1L, "업데이트"); // readOnly=true
+        Member member1 = memberService.updateNickname(updateRequest); // readOnly=true
         Member member2 = memberService.findMemberById(1L);
 
         System.out.println(member1);
@@ -103,8 +107,19 @@ class MemberServiceTest {
         Assertions.assertEquals(member1, member2); // true
     }
 
+    @Rollback(false)
+    @Transactional
     @Test
     void Entity에_Embedded한_가변객체가_있을때_equals를_override_해주지_않았을_경우에_대한_불일치_문제에서_발생하는_dirty_check() {
+
+        Member member = memberService.findMemberById(1L);
+
+        System.out.println(member);
+
+//        member.updateNickname("별칭1");
+
+        Assertions.assertNotNull(member);
+
 
         /**
          * 하이버네이트는 조회 시점의 entity "복사본"을 만들어두고

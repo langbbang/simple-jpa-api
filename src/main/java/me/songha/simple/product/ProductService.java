@@ -1,5 +1,6 @@
 package me.songha.simple.product;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import me.songha.simple.product.dto.ProductCreationRequest;
 import me.songha.simple.product.dto.ProductResponse;
@@ -7,22 +8,22 @@ import me.songha.simple.product.dto.ProductUpdateRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
 
-    @Transactional(readOnly = true)
-    public ProductResponse findProductById(Long id) {
+    public ProductResponse findProductById(@NotNull Long id) {
         return productRepository.findById(id).orElseThrow(ProductNotFoundException::new).toProductResponse();
     }
 
-    public ProductResponse create(ProductCreationRequest creationReq) {
+    public ProductResponse create(@NotNull ProductCreationRequest creationReq) {
         return productRepository.save(creationReq.toEntity()).toProductResponse();
     }
 
-    public ProductResponse modify(ProductUpdateRequest updateRequest) {
+    @Transactional
+    public ProductResponse modify(@NotNull ProductUpdateRequest updateRequest) {
         return productRepository.findById(updateRequest.getId())
                 .orElseThrow(ProductNotFoundException::new)
                 .updateProduct(updateRequest)
