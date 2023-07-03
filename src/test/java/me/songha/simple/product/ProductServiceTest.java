@@ -52,13 +52,13 @@ class ProductServiceTest {
     @Test
     void name() {
         ProductUpdateRequest updateRequest = ProductUpdateRequest.builder()
-                .name()
-                .description()
-                .id()
+                .name("변경")
+                .description("변경해요")
+                .id(1L)
                 .price(10000)
                 .build();
 
-        productService.modify(updateRequest)
+        productService.modify(updateRequest);
 
     }
 }

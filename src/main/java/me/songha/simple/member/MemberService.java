@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import me.songha.simple.member.dto.MemberCreationRequest;
 import me.songha.simple.member.dto.MemberResponse;
 import me.songha.simple.member.dto.MemberUpdateRequest;
+import me.songha.simple.member.exception.MemberNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +24,10 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResponse modify(@NotNull MemberUpdateRequest updateRequest) {
+    public MemberResponse modifyNickname(@NotNull MemberUpdateRequest updateRequest) {
         return memberRepository.findFirstByEmail(updateRequest.getEmail())
                 .orElseThrow(MemberNotFoundException::new)
-                .updateMember(updateRequest) // dirty checking
+                .updateMemberNickname(updateRequest.getNickname()) // dirty checking
                 .toMemberResponse();
     }
 

@@ -4,6 +4,7 @@ import me.songha.simple.member.dto.MemberUpdateRequest;
 import me.songha.simple.member.entity.Email;
 import me.songha.simple.member.entity.Member;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +17,7 @@ class MemberServiceTest {
     @Autowired
     private MemberTestService memberService;
 
-    //    @BeforeEach
+    @BeforeEach
     void setUp() {
         System.out.println("set up!!");
 
@@ -24,6 +25,7 @@ class MemberServiceTest {
             Member member = Member.builder()
                     .email(Email.builder().value("ex" + i + "@example.com").build())
                     .nickname("별칭" + i)
+                    .rawPassword("12345678")
                     .build();
             memberService.create(member);
         }
@@ -75,7 +77,7 @@ class MemberServiceTest {
     @Rollback(false)
     void 트랜잭션_readOnly_true_일때_Entity객체를_Update_한다면() {
         MemberUpdateRequest updateRequest = MemberUpdateRequest.builder()
-                .id(1L)
+                .email("ex1@example.com")
                 .nickname("업데이트")
                 .build();
         /**
@@ -141,6 +143,19 @@ class MemberServiceTest {
          * equals()를 override 해주어야 한다.
          */
 
+    }
+
+    @Test
+    void 패스워드_변경() {
+        Member member = memberService.updatePassword("ex1@example.com", "12345678", "abcd5678");
+        System.out.println(member);
+    }
+
+    @Test
+    void 이메일로_조회() {
+        Member member = memberService.findMemberByEmail("ex1@example.com");
+        System.out.println(member);
+        Assertions.assertNotNull(member);
     }
 
 }

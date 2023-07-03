@@ -23,6 +23,7 @@ public class OrderItem {
     @Id
     private Long id;
 
+    @JoinColumn(name = "product_id")
     @OneToOne(fetch = FetchType.LAZY)
     private Product product;
 
