@@ -1,0 +1,16 @@
+relations.txt
+
+--------------------------------------------------------------------------
+
+               order_product(product_id) ---1:N---> product
+                    ↑
+                   N:1
+                    ↓
+member <---1:N--- orders(member_id) <---1:N---> order_log(order_id)
+
+--------------------------------------------------------------------------
+
+- 각 엔티티를 기준으로 필요한 엔티티는 연관관계를 맺음
+예를 들어 orders 기준으로 member는 필요하지만 member는 orders의 정보가 필요하지 않음
+- orders와 order_log는 양방향 매핑으로 eager loading을 걸었음.
+하나의 orders 튜플에 log는 4개가 최대일 것이기 때문에 큰 부하가 예상되진 않았음.

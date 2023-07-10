@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "order")
+@Table(name = "orders")
 @Entity
 public class Order {
 
